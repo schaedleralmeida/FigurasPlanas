@@ -1,2 +1,2 @@
-from figura_simples import *
+from .figura_simples import *
 

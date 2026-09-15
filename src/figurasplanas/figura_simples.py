@@ -1,5 +1,5 @@
 from math import pi
-from figuraplana import FiguraPlana
+from .figuraplana import FiguraPlana
 
 class Retangulo(FiguraPlana):
     """

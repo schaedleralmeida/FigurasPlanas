@@ -1,5 +1,5 @@
 from math import sin, cos
-from figura_simples import *
+from .figura_simples import *
 
 
 class FiguraComposta(FiguraPlana):

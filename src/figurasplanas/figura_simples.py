@@ -69,6 +69,8 @@ class TrianguloRetangulo(FiguraPlana):
         Ix = (b * h**3) / 36
         Iy = (h * b**3) / 36
         Ixy = (b**2 * h**2) / 72
+        xc = b / 3 if xc is None else xc
+        yc = h / 3 if yc is None else yc
 
         super().__init__(A, Ix, Iy, xc, yc, Ixy)
 

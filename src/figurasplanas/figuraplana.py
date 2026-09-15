@@ -40,6 +40,9 @@ class FiguraPlana:
         self.xc = xc
         self.yc = yc
 
+        if any([value < 0 for value in [A, Ix, Iy]]):
+            raise ValueError("Área e momentos de inércia devem ser não-negativos.")
+
         self._eixos_principais_centrais()
         self._calcular_propriedades(update=False)
 

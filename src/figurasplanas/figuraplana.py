@@ -55,6 +55,8 @@ class FiguraPlana:
         self.I1 = (self.Ix_a + self.Iy_a) / 2 + sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
         self.I2 = (self.Ix_a + self.Iy_a) / 2 - sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
         self.theta_p = 0.5 * atan2(2 * self.Ixy_a, self.Ix_a - self.Iy_a)
+        if self.I2 <=0:
+            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que reultam em I2 negativo.")
 
         self.r1 = sqrt( self.I1 / self.A )
         self.r2 = sqrt( self.I2 / self.A )
@@ -93,8 +95,24 @@ class FiguraPlana:
         return f"FiguraPlana(A={self.A}, Ix={self.Ix}, Iy={self.Iy}, Ixy={self.Ixy}, xc={self.xc}, yc={self.yc})"
     
     def __str__(self) -> str:
+        def formatar_linha(*propriedades: tuple[str, float]) -> str:
+            return ", ".join(
+                f"{nome:>7}: {valor:>12.4e}"
+                for nome, valor in propriedades
+            )
+
         return (
-            f"A: {self.A}, Ix: {self.Ix}, Iy: {self.Iy}, Ixy: {self.Ixy}, xc: {self.xc}, yc: {self.yc}\n"
-            f"Io: {self.Io}, Sx: {self.Sx}, Sy: {self.Sy}, rx: {self.rx}, ry: {self.ry}, ro: {self.ro}\n"
-            f"I1: {self.I1}, I2: {self.I2}, theta_p: {self.theta_p}, Ic: {self.Ic}, r1: {self.r1}, r2: {self.r2}"
+            formatar_linha(
+                ("A", self.A), ("Ix", self.Ix), ("Iy", self.Iy),
+                ("Ixy", self.Ixy), ("xc", self.xc), ("yc", self.yc),
+            ) + "\n" +
+            formatar_linha(
+                ("Io", self.Io), ("Sx", self.Sx), ("Sy", self.Sy),
+                ("rx", self.rx), ("ry", self.ry), ("ro", self.ro),
+            ) + "\n" +
+            formatar_linha(
+                ("I1", self.I1), ("I2", self.I2),
+                ("theta_p", self.theta_p), ("Ic", self.Ic),
+                ("r1", self.r1), ("r2", self.r2),
+            )
         )

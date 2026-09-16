@@ -1,4 +1,4 @@
-from math import atan2, pi, sqrt, sin, cos
+from math import pi, sqrt, sin, cos, atan
 
 
 class FiguraPlana:
@@ -21,8 +21,8 @@ class FiguraPlana:
         rx, ry (float): raios de giração em relação aos eixos x e y.
         ro (float): raio de giração polar para origem dos eixos x-y.
         Ic (float): momento de inércia polar em relação ao centroide.
-        I1, I2 (float): momentos principais de inércia.
-        theta_p (float): ângulo entre x-y e os eixos principais.
+        I1, I2 (float): momentos principais de inércia (I1 >= I2).
+        theta_p (float): ângulo entre o eixo x e o eixo principal 1 .
         r1, r2 (float): raios de giração principais.
 
     Métodos:
@@ -56,10 +56,15 @@ class FiguraPlana:
 
         self.I1 = (self.Ix_a + self.Iy_a) / 2 + sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
         self.I2 = (self.Ix_a + self.Iy_a) / 2 - sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
-        self.theta_p = 0.5 * atan2(2 * self.Ixy_a, self.Ix_a - self.Iy_a)
-        if self.I2 <=0:
-            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que resultam em I2 negativo.")
+        self.theta_p = 0.5 * atan(2 * self.Ixy_a / (self.Ix_a - self.Iy_a))
 
+        if self.I2 <=0:
+            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que resultam em I mínimo negativo.")
+
+        #reverte a consideração incial de que Imax está próximo de Ix_a
+        if abs(self.theta_p) < pi/4 and self.Ix_a < self.Iy_a:
+            self.theta_p = self.theta_p + pi/2 if self.theta_p < 0 else self.theta_p - pi/2
+       
         self.r1 = sqrt( self.I1 / self.A )
         self.r2 = sqrt( self.I2 / self.A )
         self.Ic = self.I1 + self.I2
@@ -88,10 +93,17 @@ class FiguraPlana:
 
     def rotacionar(self, theta_p:float) -> None:
         """Rotação em torno do centroide da figura plana até a posição theta_p dos eixos principais. O ângulo theta_p é medido em radianos."""
+        if abs(theta_p) > pi/2:
+            raise ValueError("O ângulo theta_p deve estar entre -pi/2 e pi/2 radianos.")
+
         self.theta_p = theta_p
-        self.Ix_a = (self.I1 + self.I2 ) / 2 + (self.I1 - self.I2) / 2 * cos(2 * self.theta_p)
-        self.Iy_a = (self.I1 + self.I2 ) / 2 - (self.I1 - self.I2) / 2 * cos(2 * self.theta_p)
-        self.Ixy_a = (self.I1 - self.I2) / 2 * sin(2 * self.theta_p)
+        s2 = sin(-2 * self.theta_p)
+        c2 = cos(-2 * self.theta_p)
+        Im = (self.I1 + self.I2 ) / 2
+        Id = (self.I1 - self.I2 ) / 2
+        self.Ix_a = Im + Id * c2
+        self.Iy_a = Im - Id * c2
+        self.Ixy_a = Id * s2
 
         self._calcular_propriedades(update=False)
 

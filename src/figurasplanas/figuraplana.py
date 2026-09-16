@@ -42,7 +42,9 @@ class FiguraPlana:
 
         if any([value < 0 for value in [A, Ix, Iy]]):
             raise ValueError("Área e momentos de inércia devem ser não-negativos.")
-
+        if Ix*Iy < Ixy**2:
+            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy.")
+        
         self._eixos_principais_centrais()
         self._calcular_propriedades(update=False)
 
@@ -56,7 +58,7 @@ class FiguraPlana:
         self.I2 = (self.Ix_a + self.Iy_a) / 2 - sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
         self.theta_p = 0.5 * atan2(2 * self.Ixy_a, self.Ix_a - self.Iy_a)
         if self.I2 <=0:
-            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que reultam em I2 negativo.")
+            raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que resultam em I2 negativo.")
 
         self.r1 = sqrt( self.I1 / self.A )
         self.r2 = sqrt( self.I2 / self.A )
@@ -78,12 +80,14 @@ class FiguraPlana:
         self.ro = sqrt( self.Io / self.A )
 
     def transladar(self, xc:float, yc:float) -> None:
+        """Translada a figura plana para uma nova posição do centroide (xc, yc)."""
         self.xc = xc
         self.yc = yc
         self._calcular_propriedades(update=True)
 
 
     def rotacionar(self, theta_p:float) -> None:
+        """Rotação em torno do centroide da figura plana até a posição theta_p dos eixos principais. O ângulo theta_p é medido em radianos."""
         self.theta_p = theta_p
         self.Ix_a = (self.I1 + self.I2 ) / 2 + (self.I1 - self.I2) / 2 * cos(2 * self.theta_p)
         self.Iy_a = (self.I1 + self.I2 ) / 2 - (self.I1 - self.I2) / 2 * cos(2 * self.theta_p)

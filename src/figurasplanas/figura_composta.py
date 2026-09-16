@@ -46,6 +46,6 @@ class FiguraComposta(FiguraPlana):
     def __str__(self) -> str:
         txt = "Figura Composta:\n"
         for fig in self.figuras:
-            txt += f"  {fig}\n"
+            txt += f"  {fig.__repr__()}\n"
         txt += super().__str__()
         return txt

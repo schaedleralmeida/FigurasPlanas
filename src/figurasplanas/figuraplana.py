@@ -9,6 +9,10 @@ class FiguraPlana:
     A partir desses dados, ela calcula também os momentos principais, o ângulo
     principal theta_p e os raios de giração associados.
 
+    obs:
+     - I1 é o momento de inércia principal central máximo
+     - theta_p é o ângulo entre o eixo x e o eixo principal central 1 ( - pi/2 < theta_p <= pi/2 )
+
     Atributos:
         A (float): área.
         Ix (float): momento de inércia em relação ao eixo x global.
@@ -54,9 +58,18 @@ class FiguraPlana:
         self.Iy_a = self.Iy - self.xc**2 * self.A
         self.Ixy_a = self.Ixy - self.xc * self.yc * self.A
 
-        self.I1 = (self.Ix_a + self.Iy_a) / 2 + sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
-        self.I2 = (self.Ix_a + self.Iy_a) / 2 - sqrt( ((self.Ix_a - self.Iy_a) / 2)**2 + self.Ixy_a**2 )
-        self.theta_p = 0.5 * atan(2 * self.Ixy_a / (self.Ix_a - self.Iy_a))
+        Im = (self.Ix_a + self.Iy_a) / 2
+        Id = (self.Ix_a - self.Iy_a) / 2
+        Ir = sqrt( Id**2 + self.Ixy_a**2 )
+
+        self.I1 = Im + Ir
+        self.I2 = Im - Ir
+        if Id != 0:
+            self.theta_p = 0.5 * atan(self.Ixy_a / Id)
+        elif self.Ixy_a ==0:
+            self.theta_p = 0
+        else:
+            self.theta_p = pi/4 if self.Ixy_a > 0 else -pi/4
 
         if self.I2 <=0:
             raise ValueError("Há inconsistência nos valores de Ix, Iy, Ixy que resultam em I mínimo negativo.")
@@ -99,13 +112,13 @@ class FiguraPlana:
         self.theta_p = theta_p
         s2 = sin(-2 * self.theta_p)
         c2 = cos(-2 * self.theta_p)
-        Im = (self.I1 + self.I2 ) / 2
-        Id = (self.I1 - self.I2 ) / 2
-        self.Ix_a = Im + Id * c2
-        self.Iy_a = Im - Id * c2
-        self.Ixy_a = Id * s2
+        Im = (self.I1 + self.I2) / 2
+        Ir = (self.I1 - self.I2) / 2
+        self.Ix_a  = Im + Ir * c2
+        self.Iy_a  = Im - Ir * c2
+        self.Ixy_a = Ir * s2
 
-        self._calcular_propriedades(update=False)
+        self._calcular_propriedades(update=True)
 
     def __repr__(self) -> str:
         return f"FiguraPlana(A={self.A}, Ix={self.Ix}, Iy={self.Iy}, Ixy={self.Ixy}, xc={self.xc}, yc={self.yc})"

@@ -19,7 +19,7 @@ class Retangulo(FiguraPlana):
         super().__init__(A, Ix, Iy, xc, yc, Ixy)
 
         if theta != 0.0:
-            self.rotacionar(theta)
+            self.rotacionar(self.theta_p + theta)
 
     def __repr__(self) -> str:
         return f"Retangulo(b={self.b}, h={self.h}, xc={self.xc}, yc={self.yc}, theta={self.theta_p})"
@@ -30,8 +30,6 @@ class Retangulo(FiguraPlana):
         return txt
 
     
-
-
 class Circulo(FiguraPlana):
     """
     Representa um círculo de raio r.
@@ -100,7 +98,7 @@ class SemiCirculo(FiguraPlana):
 
         super().__init__(A, Ix, Iy, xc, yc, Ixy)
         if theta != 0.0:
-            self.rotacionar(theta)
+            self.rotacionar(self.theta_p + theta)
 
     def __repr__(self) -> str:
         return f"SemiCirculo(r={self.r}, xc={self.xc}, yc={self.yc}, theta={self.theta_p})"
@@ -126,7 +124,7 @@ class QuartoCirculo(FiguraPlana):
         self.theta_p0 = self.theta_p
 
         if theta != 0.0:
-            self.rotacionar(theta)
+            self.rotacionar(theta + self.theta_p)
 
     def __repr__(self) -> str:
         return f"QuartoCirculo(r={self.r}, xc={self.xc}, yc={self.yc}, theta={self.theta_p - self.theta_p0})"

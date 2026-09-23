@@ -106,10 +106,12 @@ class FiguraPlana:
 
     def rotacionar(self, theta_p:float) -> None:
         """Rotação em torno do centroide da figura plana até a posição theta_p dos eixos principais. O ângulo theta_p é medido em radianos."""
-        if abs(theta_p) > pi/2:
-            raise ValueError("O ângulo theta_p deve estar entre -pi/2 e pi/2 radianos.")
+        # if abs(theta_p) > pi/2:
+        #     raise ValueError("O ângulo theta_p deve estar entre -pi/2 e pi/2 radianos.")
 
-        self.theta_p = theta_p
+
+        self.theta_p = ( (theta_p + pi/2) % pi ) - pi/2
+
         s2 = sin(-2 * self.theta_p)
         c2 = cos(-2 * self.theta_p)
         Im = (self.I1 + self.I2) / 2

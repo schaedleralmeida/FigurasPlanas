@@ -22,6 +22,8 @@ Calcula as seguintes grandezas:
 | `r1`, `r2` | raios de giração principais |
 | `theta_p` | ângulo do eixo principal 1, em radianos |
 
+Obs.: *x-y* são eixos globais definidos pelo usuário e *1-2* são os eixos principais centrais da figura plana, sendo que o eixo *1* é o eixo segundo o qual . 
+
 ## Classes
 
 ### Figura Plana Genérica

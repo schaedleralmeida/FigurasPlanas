@@ -2,25 +2,32 @@
 from math import pi
 import figurasplanas as fp
 
-
 fig = fp.FiguraComposta()
+print("figura criada")
+print(fig)
 
 #%%
 parte1 = fp.Retangulo(6, 10)
 parte1.transladar(3, 5)
-fig.add(parte1)
+fig.adiciona(parte1)
+print("\n parte 1 adicionada")
+print(fig)
 
 #%%
 parte2 = fp.Circulo(2)
 parte2.transladar(3, 4)
-fig.add(parte2, coef=-1.0)
-
+fig.adiciona(parte2, coef=-1.0)
+print("\n parte 2 adicionada")
+print(fig)
 
 #%%
 parte3 = fp.TrianguloRetangulo(3, 6)
-parte3.transladar(6-parte3.xc, 10-parte3.yc)
-parte3.rotacionar(parte3.theta_p -pi)
-fig.add(parte3, coef=-1.0)
+
+parte3.rotacionar(-pi)
+parte3.transladar(6, 10)
+fig.adiciona(parte3, coef=-1.0)
+print("\n parte 3 adicionada")
+print(fig)
 
 #%%
 print(fig)

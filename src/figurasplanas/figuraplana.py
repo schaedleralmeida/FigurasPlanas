@@ -67,7 +67,7 @@ class FiguraPlana:
         if Id != 0:
             self.theta_p = 0.5 * atan(self.Ixy_a / Id)
         elif self.Ixy_a ==0:
-            self.theta_p = 0
+            self.theta_p = pi
         else:
             self.theta_p = pi/4 if self.Ixy_a > 0 else -pi/4
 
@@ -97,18 +97,48 @@ class FiguraPlana:
         self.ry = sqrt( self.Iy / self.A )
         self.ro = sqrt( self.Io / self.A )
 
-    def transladar(self, xc:float, yc:float) -> None:
-        """Translada a figura plana para uma nova posição do centroide (xc, yc)."""
-        self.xc = xc
-        self.yc = yc
+
+
+
+    def transladar(self, dx:float, dy:float) -> None:
+        """Translada a figura plana com deslocamento (dx, dy)."""
+        self.xc = self.xc + dx
+        self.yc = self.yc + dy
         self._calcular_propriedades(update=True)
 
 
-    def rotacionar(self, theta_p:float) -> None:
-        """Rotação em torno do centroide da figura plana até a posição theta_p dos eixos principais. O ângulo theta_p é medido em radianos."""
-        # if abs(theta_p) > pi/2:
-        #     raise ValueError("O ângulo theta_p deve estar entre -pi/2 e pi/2 radianos.")
+    def rotacionar(self, ang:float) -> None:
+        """
+        Rotação de um ângulo `ang` em torno da origem do sistema de coordenadas.
+        Obs.: ang em radianos e positivo no sentido anti-horário
+        """
 
+        s2 = sin(-2 * ang)
+        c2 = cos(-2 * ang)
+        Im = (self.Ix + self.Iy) / 2
+        Id = (self.Ix - self.Iy) / 2
+        Iv = Id * c2 + self.Ixy * s2
+
+        Ix  = Im + Iv
+        Iy  = Im - Iv
+        Ixy = Id * s2 + self.Ixy * c2
+
+        xc = self.xc * cos(-ang) - self.yc * sin(-ang)
+        yc = self.xc * sin(-ang) + self.yc * cos(-ang)
+
+        self.Ix = Ix
+        self.Iy = Iy
+        self.Ixy = Ixy
+        self.xc = xc
+        self.yc = yc
+
+        self._eixos_principais_centrais()
+        self._calcular_propriedades(update=True)
+
+    def ajustar_posição(self, xc:float, yc:float, theta_p:float):
+
+        self.xc = xc
+        self.yc = yc
 
         self.theta_p = ( (theta_p + pi/2) % pi ) - pi/2
 

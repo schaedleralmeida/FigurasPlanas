@@ -5,14 +5,7 @@
 
 ## Funcionalidades
 
-- Cálculo de área, centroide e momentos de inércia.
-- Cálculo do momento polar, raios de giração e propriedades principais.
-- Translação e rotação de figuras em torno da origem.
-- Criação de seções compostas por adição ou subtração de figuras.
-- Validação de valores inconsistentes para área e momentos de inércia.
-
-As principais grandezas são representadas pelos seguintes símbolos no
-programa:
+Calcula as seguintes grandezas:
 
 | Símbolo | Grandeza |
 | --- | --- |

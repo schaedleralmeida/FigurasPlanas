@@ -66,7 +66,7 @@ class FiguraComposta(FiguraPlana):
     def __str__(self) -> str:
         txt = f"Figura Composta: {len(self.partes)} partes\n"
         if len(self.partes) > 0:
-            for fig in self.partes:
-                txt += f"  {fig.__repr__()}\n"
+            for i, fig in enumerate(self.partes):
+                txt += f"  {i}: {fig.__repr__()}\n"
             txt += super().__str__()
         return txt

@@ -65,7 +65,7 @@ class FiguraPlana:
         self.I1 = Im + Ir
         self.I2 = Im - Ir
         if Id != 0:
-            self.theta_p = 0.5 * atan(self.Ixy_a / Id)
+            self.theta_p = 0.5 * atan(-self.Ixy_a / Id)
         elif self.Ixy_a ==0:
             self.theta_p = pi
         else:

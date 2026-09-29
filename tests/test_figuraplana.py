@@ -4,6 +4,9 @@ import figurasplanas as fp
 
 
 def test_figuraplana():
+
+    #teste de criação da figura plana com centroide na origem
+    #propriedades de um retângulo de base 4, altura 12, com centroide de gravidade na origem
     ret1 = fp.FiguraPlana(48, 576, 64, 0, 0, 0)
     assert ret1.A == 48.0
     assert ret1.Ix == 576.0
@@ -27,6 +30,8 @@ def test_figuraplana():
     assert ret1.Ic == ret1.Io
 
     #----------------------------
+    #teste de translação da figura plana
+    #leva o retângulo para o quadrante 4, com lados superior e esquerdo coincidindo com eixos x e y, respectivamente
     ret1.transladar(2, -6)
     assert ret1.A == 48.0
     assert ret1.xc == 2.0
@@ -50,8 +55,21 @@ def test_figuraplana():
     assert ret1.Ic == 640.0
 
     #----------------------------
+    #teste de criação da figura plana com centroide em ponto arbitrário
+    #cria retângulo com base 4, altura 12, com centroide de gravidade no ponto (2,-6)
     xc = 2
     yc = -6
     ret2 = fp.FiguraPlana(48, 2304, 256, xc, yc, -576)
     assert vars(ret2) == pytest.approx(vars(ret1))
 
+@pytest.mark.parametrize("A, Ix, Iy, Ixy", [
+    (-12, 16, 9, 0), #área negativa
+    (12, -16, 9, 0), #momento de inércia negativo
+    (12, 16, -9, -0), #momento de inércia negativo
+    (12, 16, 9, 20), # Ixy^2 > Ix*Iy
+    (12, 16, 9, 15), # I2 negativo
+    ])
+def test_figuraplana_erros(A, Ix, Iy, Ixy):
+    #teste de criação da figura plana com valores inválidos, deve gerar ValueError
+    with pytest.raises(ValueError):
+        fp.FiguraPlana(A, Ix, Iy, 0, 0, Ixy)

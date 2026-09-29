@@ -24,3 +24,4 @@ def test_figura_composta1():
     assert fig.Ixy == pytest.approx(-3.0e9, rel=1e-6)
     assert fig.I1 == pytest.approx(7.54e9, rel=1e-3)
     assert fig.I2 == pytest.approx(0.96e9, rel=1e-3)
+    assert fig.theta_p == pytest.approx(radians(57.1), rel=1e-3)

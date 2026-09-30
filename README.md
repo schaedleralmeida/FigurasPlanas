@@ -26,6 +26,8 @@ Obs.: *x-y* são eixos globais definidos pelo usuário e *1-2* são os eixos pri
 
 ## Classes
 
+Estas são as classes que devem ser usadas:
+
 ### Figura Plana Genérica
 
 A classe `FiguraPlana` representa uma figura genérica a partir de suas propriedades geométricas e serve como base para o cálculo e a manipulação das propriedades das demais figuras do pacote. As classes de figuras simples e compostas utilizam essa mesma estrutura de propriedades e operações.

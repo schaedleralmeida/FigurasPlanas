@@ -85,18 +85,18 @@ class TrianguloRetangulo(FiguraPlana):
 
 class SemiCirculo(FiguraPlana):
     """
-    Representa um semi-círculo de raio r.
-    Iniciado com origem no centro do semi-círculo e ângulo de 0 a pi.
+    Representa um semicírculo de raio r.
+    Iniciado com origem no centro do semicírculo e ângulo de 0 a pi.
     """
 
     def __init__(self, r:float) -> None:
 
         self.r = r
         A = (pi * r**2) / 2
-        Ix = (pi * r**4) / 8 - (8 * r**4) / (9 * pi)
+        Ix = (pi * r**4) / 8
         Iy = (pi * r**4) / 8
         xc = 0.0
-        yc = 3 * r / (4 * pi)
+        yc = 4 * r / (3 * pi)
         Ixy = 0.0
 
         super().__init__(A, Ix, Iy, xc, yc, Ixy) 
@@ -105,7 +105,7 @@ class SemiCirculo(FiguraPlana):
         return f"SemiCirculo(r={self.r})"
 
     def __str__(self) -> str:
-        txt = f"Semi-Círculo: r= {self.r} \n"
+        txt = f"Semicírculo: r= {self.r} \n"
         txt += super().__str__()
         return txt
 

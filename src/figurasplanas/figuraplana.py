@@ -123,8 +123,8 @@ class FiguraPlana:
         Iy  = Im - Iv
         Ixy = Id * s2 + self.Ixy * c2
 
-        xc = self.xc * cos(-ang) - self.yc * sin(-ang)
-        yc = self.xc * sin(-ang) + self.yc * cos(-ang)
+        xc = self.xc * cos(ang) - self.yc * sin(ang)
+        yc = self.xc * sin(ang) + self.yc * cos(ang)
 
         self.Ix = Ix
         self.Iy = Iy

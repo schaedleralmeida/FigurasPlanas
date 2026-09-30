@@ -93,10 +93,10 @@ class SemiCirculo(FiguraPlana):
 
         self.r = r
         A = (pi * r**2) / 2
-        Ix = (pi * r**4) / 8 - (8 * r**4) / (9 * pi)
+        Ix = (pi * r**4) / 8
         Iy = (pi * r**4) / 8
         xc = 0.0
-        yc = 3 * r / (4 * pi)
+        yc = 4 * r / (3 * pi)
         Ixy = 0.0
 
         super().__init__(A, Ix, Iy, xc, yc, Ixy) 
